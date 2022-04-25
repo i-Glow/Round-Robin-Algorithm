@@ -2,16 +2,16 @@
 #include <stdlib.h>
 
 typedef struct list {
-  int ID_proc;
-  int est_exec_time;
-  int arr_time;
-  int priority;
-  struct list* next;
+	int ID_proc;
+	int est_exec_time;
+	int arr_time;
+	int priority;
+	struct list* next;
 }list;
 
 typedef struct Tuple {
-  list* liste;
-  list* proc;
+	list* liste;
+	list* proc;
 }Tuple;
 
 typedef struct map {
@@ -20,25 +20,27 @@ typedef struct map {
 }map;
 
 list* create_node(int ID_proc, int est_exec_time, int arr_time, int priority) {
-  list* node = (list*)malloc(sizeof(list));
-  node -> ID_proc = ID_proc;
-  node -> est_exec_time = est_exec_time;
-  node -> arr_time = arr_time;
-  node -> priority = priority;
-  node -> next = NULL;
+	list* node = (list*)malloc(sizeof(list));
+	node -> ID_proc = ID_proc;
+	node -> est_exec_time = est_exec_time;
+	node -> arr_time = arr_time;
+	node -> priority = priority;
+	node -> next = NULL;
+
 	return node;
 }
 
 list* push(list* head, list* process){
-  list* temp = head;
-  if(temp == NULL){
-    return process;
-  }
-  while(temp -> next != NULL){
-    temp = temp -> next;
-  }
-  temp -> next = process;
-  return head;
+	list* temp = head;
+	if(temp == NULL){
+		return process;
+	}
+	while(temp -> next != NULL){
+		temp = temp -> next;
+	}
+	temp -> next = process;
+
+	return head;
 }
 
 Tuple unshift(list* head){
@@ -47,7 +49,8 @@ Tuple unshift(list* head){
 	a.liste = nxt;
 	head -> next = NULL;
 	a.proc = head;
-  return a;
+
+	return a;
 }
 
 void round_robin(list* head, int nofprocess) {
@@ -60,7 +63,6 @@ void round_robin(list* head, int nofprocess) {
 	int i = 0;
 	while(head != NULL){
 		if(head -> est_exec_time < quantum){
-
 			printf("[%d - %d]: %d, remaining exec time: %d, ", time, time + (head -> est_exec_time), head -> ID_proc, 0);
 			print(head);
 			time += head -> est_exec_time;
@@ -114,22 +116,23 @@ void print(list* head) {
 
 int main()
 {
-  int nofprocess;
-  list* process_list = NULL;
+	int nofprocess;
+	list* process_list = NULL;
 
-  printf("Number of processes: ");
-  scanf("%d", &nofprocess);
-  for(int i = 0; i < nofprocess; i++){
-    int pid, exectime, arrtime, priority;
-    printf("Process id: ");
-    scanf("%d", &pid);
-    printf("Estimated execution time: ");
-    scanf("%d", &exectime);
+	printf("Number of processes: ");
+	scanf("%d", &nofprocess);
+	for(int i = 0; i < nofprocess; i++){
+	int pid, exectime, arrtime, priority;
+	printf("Process id: ");
+	scanf("%d", &pid);
+	printf("Estimated execution time: ");
+	scanf("%d", &exectime);
 
-		list* newNode = create_node(pid, exectime, arrtime, priority);
-		process_list = push(process_list, newNode);
-  }
+	list* newNode = create_node(pid, exectime, arrtime, priority);
+	process_list = push(process_list, newNode);
+	}
 
 	round_robin(process_list, nofprocess);
+	
 	return 0;
 }
